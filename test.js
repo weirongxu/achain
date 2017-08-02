@@ -2,7 +2,7 @@ const test = require('ava')
 const delay = require('delay')
 const achain = require('./')
 
-const asyncFunc = (ret) => {
+const asyncFunc = ret => {
   return async () => {
     await delay(10)
     return ret
