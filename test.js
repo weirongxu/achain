@@ -1,104 +1,83 @@
 const test = require('ava')
+const delay = require('delay')
 const achain = require('./')
 
-test('not promise', async t => {
-  const a = await achain('not promise')
-  t.is(a, 'not promise')
-})
+const asyncFunc = (ret) => {
+  return async () => {
+    await delay(10)
+    return ret
+  }
+}
 
-test('delay promise', async t => {
-  const p = new Promise(resolve => {
-    setTimeout(() => {
-      resolve('delay promise')
-    }, 10)
-  })
-  const a = await achain(p)
-  t.is(a, 'delay promise')
+test('not promise', async t => {
+  t.is(await achain('not promise'), 'not promise')
 })
 
 test('async function', async t => {
-  async function func() {
-    return 'async function'
-  }
+  const func = asyncFunc('async function')
 
-  const a = await achain(func())
-  t.is(a, 'async function')
+  t.is(await achain(func()), 'async function')
 })
 
 test('async chain', async t => {
-  async function func() {
-    return {
-      val: 2,
-      func2,
-    }
-  }
+  const func = asyncFunc({
+    val: 2,
+    func2,
+  })
 
   async function func2() {
     return this.val
   }
 
-  const a = await achain(func()).func2()
-  t.is(a, 2)
+  t.is(await achain(func()).func2(), 2)
 })
 
 test('async chain with prop', async t => {
-  async function func() {
-    return {
-      prop: 'prop',
-    }
-  }
+  const func = asyncFunc({
+    prop: 'prop',
+  })
 
-  const a = await achain(func()).prop
-  t.is(a, 'prop')
+  t.is(await achain(func()).prop, 'prop')
 })
 
 test('async chain with prop function', async t => {
-  async function func() {
-    return {
-      prop: {
-        val: 2,
-        func2,
-      },
-    }
-  }
+  const func = asyncFunc({
+    prop: {
+      val: 2,
+      func2,
+    },
+  })
 
   async function func2() {
     return this.val
   }
 
-  const a = await achain(func()).prop.func2()
-  t.is(a, 2)
+  t.is(await achain(func()).prop.func2(), 2)
 })
 
 test('async chain with delay function', async t => {
-  async function func() {
-    return {
-      prop: {
-        val: 2,
-        func2,
-      },
-    }
-  }
+  const func = asyncFunc({
+    prop: {
+      val: 2,
+      func2,
+    },
+  })
 
   async function func2() {
-    return new Promise(resolve => {
-      resolve(this.val)
-    })
+    delay(10)
+    return this.val
   }
 
-  const a = await achain(func()).prop.func2()
-  t.is(a, 2)
+  t.is(await achain(func()).prop.func2(), 2)
 })
 
 test('multiple async chain with prop function', async t => {
-  async function func() {
-    return {
-      prop: {
-        val: 2,
-        fun2,
-      },
-    }
-  }
+  const func = asyncFunc({
+    prop: {
+      val: 2,
+      fun2,
+    },
+  })
 
   async function fun2(val) {
     if (val) {
@@ -116,22 +95,18 @@ test('multiple async chain with prop function', async t => {
 })
 
 test('async function chain', async t => {
-  async function func() {
-    return func2
-  }
+  const func = asyncFunc(func2)
 
   async function func2() {
     return 2
   }
 
-  const a = await achain(func())()
-  t.is(a, 2)
+  t.is(await achain(func())(), 2)
 })
 
 test('catch reject', async t => {
-  async function func() {
-    return func2
-  }
+  const func = asyncFunc(func2)
+
   async function func2() {
     throw new Error('error')
   }
@@ -141,9 +116,8 @@ test('catch reject', async t => {
 })
 
 test.cb('catch reject with callback', t => {
-  async function func() {
-    return func2
-  }
+  const func = asyncFunc(func2)
+
   async function func2() {
     throw new Error('error')
   }
