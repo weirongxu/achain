@@ -1,0 +1,37 @@
+{
+  "name": "achain",
+  "version": "1.0.0",
+  "description": "asynchronous chain function",
+  "keywords": [
+    "async",
+    "await",
+    "achain",
+    "chain"
+  ],
+  "main": "index.js",
+  "repository": "https://github.com/weirongxu/achain.git",
+  "author": "Weirong Xu <weirongxu.raidou@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ava --watch",
+    "test": "xo && nyc ava"
+  },
+  "files": [
+    "index.js"
+  ],
+  "xo": {
+    "space": 2,
+    "semicolon": false,
+    "rules": {
+      "comma-dangle": [
+        "error",
+        "always-multiline"
+      ]
+    }
+  },
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "nyc": "^11.1.0",
+    "xo": "^0.18.2"
+  }
+}
