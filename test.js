@@ -9,15 +9,22 @@ const asyncFunc = ret => {
   }
 }
 
+
 test('not promise', async t => {
   t.is(await achain('not promise'), 'not promise')
+
+  let a = achain('not promise')
+  await delay(10)
+  t.is(await a, 'not promise')
 })
+
 
 test('async function', async t => {
   const func = asyncFunc('async function')
 
   t.is(await achain(func()), 'async function')
 })
+
 
 test('async chain', async t => {
   const func = asyncFunc({
@@ -32,6 +39,7 @@ test('async chain', async t => {
   t.is(await achain(func()).func2(), 2)
 })
 
+
 test('async chain with prop', async t => {
   const func = asyncFunc({
     prop: 'prop',
@@ -39,6 +47,7 @@ test('async chain with prop', async t => {
 
   t.is(await achain(func()).prop, 'prop')
 })
+
 
 test('async chain with prop function', async t => {
   const func = asyncFunc({
@@ -55,6 +64,7 @@ test('async chain with prop function', async t => {
   t.is(await achain(func()).prop.func2(), 2)
 })
 
+
 test('async chain with delay function', async t => {
   const func = asyncFunc({
     prop: {
@@ -70,6 +80,7 @@ test('async chain with delay function', async t => {
 
   t.is(await achain(func()).prop.func2(), 2)
 })
+
 
 test('multiple async chain with prop function', async t => {
   const func = asyncFunc({
@@ -94,6 +105,7 @@ test('multiple async chain with prop function', async t => {
   t.is(b, 2)
 })
 
+
 test('async function chain', async t => {
   const func = asyncFunc(func2)
 
@@ -103,6 +115,7 @@ test('async function chain', async t => {
 
   t.is(await achain(func())(), 2)
 })
+
 
 test('catch reject', async t => {
   const func = asyncFunc(func2)
@@ -115,6 +128,7 @@ test('catch reject', async t => {
   t.is(error.message, 'error')
 })
 
+
 test.cb('catch reject with callback', t => {
   const func = asyncFunc(func2)
 
@@ -122,7 +136,8 @@ test.cb('catch reject with callback', t => {
     throw new Error('error')
   }
 
-  achain(func())().catch(err => {
+  achain(func())().then(() => {
+  }).catch(err => {
     t.is(err.message, 'error')
     t.end()
   })

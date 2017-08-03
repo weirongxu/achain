@@ -49,8 +49,9 @@ module.exports = function (source) {
 
   run()
 
-  const target = function () {}
+  const target = () => {}
   const delayPromise = () => {
+    run()
     return new Promise((resolve, reject) => {
       done = current => {
         if (executeError) {
