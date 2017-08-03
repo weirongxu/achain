@@ -21,60 +21,23 @@ yarn add achain
 ```javascript
 const achain = require('achain')
 
-let attr = await achain(promise()).attr.asyncFunc().asyncFunc()().attr
+let attr = await achain(promise).attr.asyncFunc().asyncFunc()().attr
 ```
 
 ## Example
 Before
 ```javascript
-async function func1() {
-  return {
-    prop: {
-      func2,
-    },
-  }
-}
-
-async function func2() {
-  return 'msg'
-}
-
 async function main() {
-  await (await func1()).prop.func()
+  let user = await getUser()
+  let userDetail = await user.getDetail()
+  await userDetail.destroy()
 }
 ```
 
 After
 ```javascript
 async function main() {
-  await achain(func1()).prop.func()
-}
-```
-
----
-
-Before
-```javascript
-async function getUser(id) {
-  return new Promise((resolve) => {
-    resolve(new User({
-    }))
-  })
-}
-
-async function main() {
-  await (await getUser(1)).update({
-    name: 'new name',
-  })
-}
-```
-
-After
-```javascript
-async function main() {
-  await achain(getUser(1)).update({
-    name: 'new name',
-  })
+  await achain(getUser()).getDetail().destroy()
 }
 ```
 
