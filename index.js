@@ -1,3 +1,5 @@
+const pLazy = require('p-lazy')
+
 module.exports = function (source) {
   const chains = []
 
@@ -50,25 +52,21 @@ module.exports = function (source) {
   run()
 
   const target = () => {}
-  const delayPromise = () => {
+  const lazyPromise = new pLazy((resolve, reject) => {
     run()
-    return new Promise((resolve, reject) => {
-      done = current => {
-        if (executeError) {
-          reject(executeError)
-        } else {
-          resolve(current)
-        }
+    done = current => {
+      if (executeError) {
+        reject(executeError)
+      } else {
+        resolve(current)
       }
-    })
-  }
+    }
+  })
   target.then = (...args) => {
-    const p = delayPromise()
-    return p.then.apply(p, args)
+    return lazyPromise.then.apply(lazyPromise, args)
   }
   target.catch = (...args) => {
-    const p = delayPromise()
-    return p.catch.apply(p, args)
+    return lazyPromise.catch.apply(lazyPromise, args)
   }
 
   const proxy = new Proxy(target, {
