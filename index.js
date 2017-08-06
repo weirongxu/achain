@@ -1,4 +1,4 @@
-const pLazy = require('p-lazy')
+const PLazy = require('p-lazy')
 
 module.exports = function (source) {
   const chains = []
@@ -52,7 +52,7 @@ module.exports = function (source) {
   run()
 
   const target = () => {}
-  const lazyPromise = new pLazy((resolve, reject) => {
+  const lazyPromise = new PLazy((resolve, reject) => {
     run()
     done = current => {
       if (executeError) {
