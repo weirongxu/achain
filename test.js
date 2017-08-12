@@ -17,6 +17,15 @@ test('not promise', async t => {
   t.is(await a, 'not promise')
 })
 
+test('quote function', async t => {
+  const func = asyncFunc('quote function')
+  t.is(await achain(func)(), 'quote function')
+
+  const afunc = achain(func)
+  await delay(10)
+  t.is(await afunc(), 'quote function')
+})
+
 test('async function', async t => {
   const func = asyncFunc('async function')
 
