@@ -28,16 +28,37 @@ let attr = await achain(promise).attr.asyncFunc().asyncFunc()().attr
 Before
 ```javascript
 async function main() {
-  let user = await getUser()
+  let user = await getUser(1)
   let userDetail = await user.getDetail()
   await userDetail.destroy()
+
+  let user = await getUser(2)
+  let name = user.name
 }
 ```
 
 After
 ```javascript
 async function main() {
-  await achain(getUser()).getDetail().destroy()
+  await achain(getUser(1)).getDetail().destroy()
+  let name = await achain(getUser(2)).name
+}
+```
+---
+
+Before
+```javascript
+async function main() {
+  let res = await fetch('/users.json')
+  let data = res.json()
+}
+```
+
+After
+```javascript
+api = achain(fetch)
+async function main() {
+  let data = await api('/users.json').json()
 }
 ```
 
