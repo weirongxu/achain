@@ -56,7 +56,7 @@ async function main() {
 
 After
 ```javascript
-api = achain(fetch)
+var api = achain(fetch)
 async function main() {
   let data = await api('/users.json').json()
 }
