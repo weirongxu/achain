@@ -1,90 +1,39 @@
-const PLazy = require('p-lazy')
-
-module.exports = function (source) {
-  const chains = []
-
-  let current = null
-  let previous = null
-  let isExecuting = false
-  let done = () => {}
-  let executeError = null
-
-  const execute = async () => {
-    if (current === null) {
-      current = await source
-      await execute()
-    } else if (chains.length > 0) {
-      const node = chains.shift()
-      let ret
-      switch (node.type) {
-        case 'val':
-          ret = await current[node.name]
-          previous = current
-          current = ret
-          break
-        case 'apply':
-          ret = await current.apply(previous, node.args)
-          previous = current
-          current = ret
-          break
-        default:
-          break
-      }
-      await execute()
-    }
-  }
-
-  const run = async () => {
-    if (isExecuting || executeError) {
-      return
-    }
-
-    isExecuting = true
-    try {
-      await execute()
-    } catch (err) {
-      executeError = err
-    }
-    isExecuting = false
-    done(current)
-  }
-
-  run()
-
+const proxy = (source, isLazy) => {
   const target = () => {}
-  const lazyPromise = new PLazy((resolve, reject) => {
-    run()
-    done = current => {
-      if (executeError) {
-        reject(executeError)
-      } else {
-        resolve(current)
-      }
-    }
+  const promise = new Promise((resolve, reject) => {
+    source.then(([result]) => {
+      resolve(result)
+    }, reject)
   })
   target.then = (...args) => {
-    return lazyPromise.then.apply(lazyPromise, args)
+    return promise.then.apply(promise, args)
   }
   target.catch = (...args) => {
-    return lazyPromise.catch.apply(lazyPromise, args)
+    return promise.catch.apply(promise, args)
   }
 
-  const proxy = new Proxy(target, {
+  return new Proxy(target, {
     get(target, name) {
       if (name in target) {
         return target[name]
       }
 
-      chains.push({type: 'val', name})
-      run()
-      return proxy
+      return proxy((async () => {
+        const [result] = await source
+        return [await result[name], result]
+      })(), isLazy)
     },
     apply(target, thisArg, args) {
-      chains.push({type: 'apply', args})
-      run()
-      return proxy
+      return proxy((async () => {
+        const [result, self] = await source
+        return [await result.apply(self, args), result]
+      })(), isLazy)
     },
   })
-  return proxy
 }
 
+module.exports = (source, isLazy = false) => {
+  return proxy((async () => {
+    return [await source, source]
+  })(), isLazy)
+}
