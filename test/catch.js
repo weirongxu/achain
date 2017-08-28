@@ -20,8 +20,18 @@ test.cb('catch reject with callback', t => {
     throw new Error('error')
   }
 
+  achain(func())().catch(err => {
+    t.is(err.message, 'error')
+    t.end()
+  })
+
   achain(func())().then(() => {
   }).catch(err => {
+    t.is(err.message, 'error')
+    t.end()
+  })
+
+  achain(func2()).catch(err => {
     t.is(err.message, 'error')
     t.end()
   })
