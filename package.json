@@ -1,6 +1,6 @@
 {
   "name": "achain",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "asynchronous chain function",
   "keywords": [
     "async",
