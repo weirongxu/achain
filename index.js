@@ -1,3 +1,5 @@
+'use strict'
+
 const proxy = (source, isLazy) => {
   const target = () => {}
   const promise = new Promise((resolve, reject) => {
