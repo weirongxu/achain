@@ -2,7 +2,7 @@
 
 [![NPM version](https://img.shields.io/npm/v/achain.svg?style=flat-square)](https://npmjs.com/package/achain)
 [![NPM downloads](https://img.shields.io/npm/dm/achain.svg?style=flat-square)](https://npmjs.com/package/achain)
-[![Build Status](https://img.shields.io/circleci/project/weirongxu/achain/master.svg?style=flat-square)](https://circleci.com/gh/weirongxu/achain)
+[![Build Status](https://img.shields.io/circleci/project/github/weirongxu/achain.svg?style=flat-square)](https://circleci.com/gh/weirongxu/achain)
 
 asynchronous chain function based on [Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy)
 
