@@ -1,6 +1,6 @@
 {
   "name": "achain",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "asynchronous chain function",
   "keywords": [
     "async",
@@ -9,6 +9,7 @@
     "chain"
   ],
   "main": "index.js",
+  "types": "index.d.ts",
   "repository": "https://github.com/weirongxu/achain.git",
   "author": "Weirong Xu <weirongxu.raidou@gmail.com>",
   "license": "MIT",
