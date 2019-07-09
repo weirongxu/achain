@@ -2745,9 +2745,9 @@ p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
 
-p-lazy@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/p-lazy/-/p-lazy-1.0.0.tgz#ec53c802f2ee3ac28f166cc82d0b2b02de27a835"
+p-lazy@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/p-lazy/-/p-lazy-3.0.0.tgz#3d8b2aceea3e49f8e5883947838e9370f15c9e28"
 
 p-limit@^1.1.0:
   version "1.1.0"
