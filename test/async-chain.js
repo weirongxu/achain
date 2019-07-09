@@ -1,6 +1,6 @@
 const test = require('ava')
-const achain = require('../')
 const {delay, asyncFunc} = require('./_utils')
+const achain = require('..')
 
 test('function', async t => {
   const func = asyncFunc({
@@ -59,6 +59,7 @@ test('multiple async chain', async t => {
     if (val) {
       return val
     }
+
     return this.val
   }
 

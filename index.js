@@ -8,10 +8,11 @@ const proxy = (source, isLazy) => {
     }, reject)
   })
   target.then = (...args) => {
-    return promise.then.apply(promise, args)
+    return promise.then(...args)
   }
+
   target.catch = (...args) => {
-    return promise.catch.apply(promise, args)
+    return promise.catch(...args)
   }
 
   return new Proxy(target, {

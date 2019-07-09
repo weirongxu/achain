@@ -1,6 +1,6 @@
 const test = require('ava')
-const achain = require('../')
 const {delay, asyncFunc} = require('./_utils')
+const achain = require('..')
 
 test('not promise', async t => {
   t.is(await achain('not promise'), 'not promise')
